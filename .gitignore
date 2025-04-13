@@ -181,6 +181,9 @@ dist
 **/*.backup.*
 **/*.back.*
 
+### jetbrains ###
+.idea
+
 node_modules
 
 *.sublime*

@@ -63,6 +63,7 @@ export function Ach({
     try {
       const result = await ach.tokenize({
         accountHolderName,
+        //@ts-expect-error until square updates their types
         intent: recurringChargeArgs ? "RECURRING_CHARGE": 'CHARGE',
         amount: createPaymentRequest.total.amount,
         currency: createPaymentRequest.currencyCode,
