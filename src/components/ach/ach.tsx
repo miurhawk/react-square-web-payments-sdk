@@ -36,6 +36,7 @@ export function Ach({
   children,
   svgProps,
   recurringChargeArgs,
+  storeOnly,
 }: AchProps) {
   const [ach, setAch] = React.useState<Square.ACH | undefined>(() => undefined);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
@@ -64,9 +65,15 @@ export function Ach({
       const result = await ach.tokenize({
         accountHolderName,
         //@ts-expect-error until square updates their types
-        intent: recurringChargeArgs ? "RECURRING_CHARGE": 'CHARGE',
-        amount: createPaymentRequest.total.amount,
-        currency: createPaymentRequest.currencyCode,
+        intent: storeOnly ? "STORE" : recurringChargeArgs ? "RECURRING_CHARGE": 'CHARGE',
+        //@ts-expect-error until square updates their types
+        amount: storeOnly ? undefined : createPaymentRequest.total.amount,
+        //@ts-expect-error until square updates their types
+        currency: storeOnly ? undefined : createPaymentRequest.currencyCode,
+        total: recurringChargeArgs ? {
+          amount: createPaymentRequest.total.amount,
+          currencyCode: createPaymentRequest.currencyCode,
+        } : undefined,
         ...recurringChargeArgs,
       });
 

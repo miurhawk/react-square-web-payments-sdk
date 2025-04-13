@@ -18,7 +18,7 @@ import type { AchProps } from './ach.types';
  * }
  * ```
  */
-export declare function Ach({ accountHolderName, redirectURI, transactionId, callbacks, buttonProps, children, svgProps, recurringChargeArgs, }: AchProps): React.JSX.Element;
+export declare function Ach({ accountHolderName, redirectURI, transactionId, callbacks, buttonProps, children, svgProps, recurringChargeArgs, storeOnly, }: AchProps): React.JSX.Element;
 export default Ach;
 export * from './ach.types';
 //# sourceMappingURL=ach.d.ts.map

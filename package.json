@@ -1,13 +1,13 @@
 {
-  "name": "react-square-web-payments-sdk",
-  "version": "3.2.4-beta.2",
+  "name": "@miurhawk/react-square-web-payments-sdk",
+  "version": "3.2.4-beta.5",
   "homepage": "https://weareseeed.github.io/react-square-web-payments-sdk/",
   "bugs": {
     "url": "https://github.com/weareseeed/react-square-web-payments-sdk/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:miurhawk/react-square-web-payments-sdk.git"
+    "url": "git+ssh://git@github.com/miurhawk/react-square-web-payments-sdk.git"
   },
   "license": "MIT",
   "author": "Seeed LLC. <sales@seeed.us> (https://seeed.us)",
@@ -96,5 +96,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "description": "extension to react-square-web-payments-sdk"
 }

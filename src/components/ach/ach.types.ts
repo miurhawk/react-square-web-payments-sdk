@@ -191,6 +191,8 @@ export interface AchProps extends AchBase {
   svgProps?: SvgProps;
   /** Props to be passed to the ach.tokenize method */
   accountHolderName: string;
+  /** if true, intent is STORE */
+  storeOnly?: boolean;
   /** optional, if set then intent will be "RECURRING_CHARGE" */
   recurringChargeArgs?: {
     cadence: "MONTHLY"|"WEEKLY";

@@ -1,63 +1,68 @@
 import * as e from "react";
-import { useForm as S } from "../../contexts/form/form.es.mjs";
-import { useEventListener as _ } from "../../hooks/use-event-listener.es.mjs";
-import { PayButton as R, SvgIcon as H } from "./ach.styles.es.mjs";
+import { useForm as _ } from "../../contexts/form/form.es.mjs";
+import { useEventListener as H } from "../../hooks/use-event-listener.es.mjs";
+import { PayButton as R, SvgIcon as G } from "./ach.styles.es.mjs";
 import { transformPlaidEventName as O } from "./ach.utils.es.mjs";
 function U({
   accountHolderName: b,
-  redirectURI: v,
-  transactionId: C,
+  redirectURI: C,
+  transactionId: k,
   callbacks: l,
-  buttonProps: g,
-  children: d,
-  svgProps: k,
-  recurringChargeArgs: m
+  buttonProps: z,
+  children: p,
+  svgProps: x,
+  recurringChargeArgs: c,
+  storeOnly: u
 }) {
-  const [r, z] = e.useState(() => {
-  }), [A, p] = e.useState(!1), { cardTokenizeResponseReceived: h, createPaymentRequest: o, payments: w } = S(), c = e.useRef(null), x = async (n) => {
+  const [r, A] = e.useState(() => {
+  }), [S, h] = e.useState(!1), { cardTokenizeResponseReceived: E, createPaymentRequest: o, payments: w } = _(), d = e.useRef(null), g = async (n) => {
     if (n.stopPropagation(), !r) {
       console.warn("ACH button was clicked, but no ACH instance was found.");
       return;
     }
     if (!o)
       throw new Error("`createPaymentRequest()` is required when using ACH payments");
-    p(!0);
+    h(!0);
     try {
       const t = await r.tokenize({
         accountHolderName: b,
-        intent: m ? "RECURRING_CHARGE" : "CHARGE",
-        amount: o.total.amount,
-        currency: o.currencyCode,
-        ...m
+        intent: u ? "STORE" : c ? "RECURRING_CHARGE" : "CHARGE",
+        amount: u ? void 0 : o.total.amount,
+        currency: u ? void 0 : o.currencyCode,
+        total: c ? {
+          amount: o.total.amount,
+          currencyCode: o.currencyCode
+        } : void 0,
+        ...c
       });
       if (t?.status === "OK")
-        return await h(t);
-      let s = `Tokenization failed with status: ${t?.status ?? ""}`;
+        return await E(t);
+      let i = `Tokenization failed with status: ${t?.status ?? ""}`;
       if (t?.errors)
-        throw s += ` and errors: ${JSON.stringify(t?.errors)}`, new Error(s);
-      console.warn(s);
+        throw i += ` and errors: ${JSON.stringify(t?.errors)}`, new Error(i);
+      console.warn(i);
     } catch (t) {
       console.error(t);
     } finally {
-      p(!1);
+      h(!1);
     }
   };
   if (e.useEffect(() => {
     const n = new AbortController(), { signal: t } = n;
-    return (async (u) => {
-      const f = await w?.ach({
-        redirectURI: v,
-        transactionId: C
-      }).then((i) => {
-        if (!u?.aborted)
-          return z(i), i;
+    return (async (f) => {
+      const m = await w?.ach({
+        redirectURI: C,
+        transactionId: k
+      }).then((s) => {
+        if (!f?.aborted)
+          return A(s), s;
       });
-      u.aborted ? (f?.removeEventListener("ontokenization", () => {
-      }), await f?.destroy()) : f?.addEventListener(
+      f.aborted ? (m?.removeEventListener("ontokenization", () => {
+      }), await m?.destroy()) : m?.addEventListener(
         "ontokenization",
-        async (i) => {
-          const { tokenResult: y, error: P } = i.detail;
-          P || y?.status == "OK" && await h(y);
+        async (s) => {
+          const { tokenResult: v, error: P } = s.detail;
+          P || v?.status == "OK" && await E(v);
         }
       );
     })(t), () => {
@@ -69,24 +74,24 @@ function U({
         O(n),
         l[n]
       );
-  _({
-    listener: x,
+  H({
+    listener: g,
     type: "click",
-    element: c,
+    element: d,
     options: {
       passive: !0
     }
   });
-  const { isLoading: L, ...E } = g ?? {}, a = L || !r || A;
-  return d ? /* @__PURE__ */ e.createElement(R, { ...E, "aria-disabled": a, disabled: a, ref: c, type: "button" }, d) : /* @__PURE__ */ e.createElement(R, { ...E, "aria-disabled": a, disabled: a, ref: c, type: "button" }, /* @__PURE__ */ e.createElement(
-    H,
+  const { isLoading: L, ...y } = z ?? {}, a = L || !r || S;
+  return p ? /* @__PURE__ */ e.createElement(R, { ...y, "aria-disabled": a, disabled: a, ref: d, type: "button" }, p) : /* @__PURE__ */ e.createElement(R, { ...y, "aria-disabled": a, disabled: a, ref: d, type: "button" }, /* @__PURE__ */ e.createElement(
+    G,
     {
       fill: "none",
       height: "1em",
       viewBox: "0 0 36 24",
       width: "1em",
       xmlns: "http://www.w3.org/2000/svg",
-      ...k
+      ...x
     },
     /* @__PURE__ */ e.createElement("rect", { fill: "url(#prefix__paint0_linear)", height: 24, rx: 4, width: 36 }),
     /* @__PURE__ */ e.createElement(
